@@ -1,5 +1,6 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
+const db = require('./models')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()

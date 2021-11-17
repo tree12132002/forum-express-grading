@@ -15,7 +15,11 @@ const helpers = require('./_helpers')
 const app = express()
 const port = process.env.PORT || 3000
 
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('hbs', exphbs({ 
+  defaultLayout: 'main', 
+  extname: '.hbs',
+  helpers: require('./config/handlebars-helpers')
+ }))
 app.set('view engine', 'hbs')
 
 app.use(express.urlencoded({ extended: true }))

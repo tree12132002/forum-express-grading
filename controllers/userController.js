@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 
 const userController = {
   signUpPage: (req, res) => {
@@ -52,11 +54,19 @@ const userController = {
   getUser: (req, res) => {
     return User.findByPk(req.params.id)
       .then(user => {
-        return res.render('profile', { user: user.toJSON() })
+        Comment.findAll({ where: { UserId: user.id }, include: [Restaurant], raw: true, nest: true })
+          .then((comments) => {
+            return res.render('profile', { user: user.toJSON(), comments: comments, count: comments.length })
+          })
       })
   },
 
   editUser: (req, res) => {
+    if (req.user.id !== Number(req.params.id)) {
+      req.flash('error_messages', "can't edit other's profile")
+      return res.redirect(`/users/${req.user.id}`)
+    }
+
     return User.findByPk(req.params.id)
       .then(user => {
         return res.render('edit', { user: user.toJSON() })
@@ -64,6 +74,11 @@ const userController = {
   },
 
   putUser: (req, res) => {
+    if (req.user.id !== Number(req.params.id)) {
+      req.flash('error_messages', "can't edit other's profile")
+      return res.redirect(`/users/${req.user.id}`)
+    }
+
     if (!req.body.name) {
       req.flash('error_messages', "name didn't exist")
       console.log(req.body.name)

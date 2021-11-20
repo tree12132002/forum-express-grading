@@ -60,6 +60,7 @@ const restController = {
       ]
     })
     .then(restaurant => {
+      restaurant.increment('viewCounts')
       return res.render('restaurant', { restaurant: restaurant.toJSON() })
     })
   },

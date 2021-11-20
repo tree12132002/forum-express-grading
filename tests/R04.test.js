@@ -10,8 +10,8 @@ const { createModelMock, createControllerProxy, mockRequest, mockResponse } = re
 // 建立模擬的 Like 資料
 let mockLikeData = [
   {
-    userId: 1,
-    restaurantId: 2,
+    UserId: 1,
+    RestaurantId: 2,
   },
 ]
 
@@ -27,9 +27,9 @@ describe('# R04: Like / Unlike', function () {
       // 建立了一個模擬的 Like table，裡面目前是空的
       this.mockLikeData = []
       this.likeMock = createModelMock('Like', null, this.mockLikeData)
-      
+
       // 連向模擬的 Like table
-      this.userController = createControllerProxy('../controllers/userController', {Like: this.likeMock})
+      this.userController = createControllerProxy('../controllers/userController', { Like: this.likeMock })
     })
 
     it(' POST /like/:restaurantId ', async () => {

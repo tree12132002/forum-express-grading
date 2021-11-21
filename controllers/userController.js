@@ -57,16 +57,18 @@ const userController = {
   },
 
   getUser: (req, res) => {
-    return User.findByPk(req.params.id)
+    return User.findByPk(req.params.id, {
+      include: [
+        { model: Comment, include: [Restaurant] },
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' },
+        { model: Restaurant, as: 'FavoritedRestaurants' }
+      ]
+    })
       .then(user => {
-        Comment.findAll({ where: { UserId: user.id }, include: [Restaurant], raw: true, nest: true })
-          .then((comments) => {
-            return res.render('profile', {
-              user: user.toJSON(),
-              comments: comments,
-              count: comments.length
-            })
-          })
+        return res.render('profile', {
+          user: user.toJSON()
+        })
       })
   },
 

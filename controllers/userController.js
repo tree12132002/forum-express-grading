@@ -59,22 +59,22 @@ const userController = {
   getUser: (req, res) => {
     return User.findByPk(req.params.id)
       .then(user => {
-        // Comment.findAll({ where: { UserId: user.id }, include: [Restaurant], raw: true, nest: true })
-        //   .then((comments) => {
+        Comment.findAll({ where: { UserId: user.id }, include: [Restaurant], raw: true, nest: true })
+          .then((comments) => {
             return res.render('profile', {
               user: user.toJSON(),
-            //   comments: comments,
-            //   count: comments.length
-            // })
+              comments: comments,
+              count: comments.length
+            })
           })
       })
   },
 
   editUser: (req, res) => {
-    // if (req.user.id !== Number(req.params.id)) {
-    //   req.flash('error_messages', "can't edit other's profile")
-    //   return res.redirect(`/users/${req.user.id}`)
-    // }
+    if (req.user.id !== Number(req.params.id)) {
+      req.flash('error_messages', "can't edit other's profile")
+      return res.redirect(`/users/${req.user.id}`)
+    }
 
     return User.findByPk(req.params.id)
       .then(user => {
@@ -83,10 +83,10 @@ const userController = {
   },
 
   putUser: (req, res) => {
-    // if (req.user.id !== Number(req.params.id)) {
-    //   req.flash('error_messages', "can't edit other's profile")
-    //   return res.redirect(`/users/${req.user.id}`)
-    // }
+    if (req.user.id !== Number(req.params.id)) {
+      req.flash('error_messages', "can't edit other's profile")
+      return res.redirect(`/users/${req.user.id}`)
+    }
 
     if (!req.body.name) {
       req.flash('error_messages', "name didn't exist")
@@ -151,7 +151,7 @@ const userController = {
 
   addLike: (req, res) => {
     return Like.create({
-      UserId: helpers.getUser(req).id,
+      UserId: req.user.id,
       RestaurantId: req.params.restaurantId
     })
       .then((restaurant) => {
@@ -162,7 +162,7 @@ const userController = {
   removeLike: (req, res) => {
     return Like.destroy({
       where: {
-        UserId: helpers.getUser(req).id,
+        UserId: req.user.id,
         RestaurantId: req.params.restaurantId
       }
     })

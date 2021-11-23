@@ -20,7 +20,6 @@
 
 <div>
   {{#each restaurants}}
-  {{#ifNot this.favoritedCount 0}}
   <div class="d-flex justify-content-center row">  
     <div class="card mb-4" style="width: 60%;">
       <div class="row g-0">
@@ -49,6 +48,5 @@
       </div>
     </div>
   </div>
-  {{/ifNot}}
   {{/each}}
 </div>>

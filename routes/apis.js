@@ -20,6 +20,10 @@ const adminController = require('../controllers/api/adminController')
 const categoryController = require('../controllers/api/categoryController')
 const userController = require('../controllers/api/userController')
 const restController = require('../controllers/api/restController')
+const commentController = require('../controllers/api/commentController')
+
+router.post('/comments', authenticated, commentController.postComment)
+router.delete('/comments/:id',authenticated , authenticatedAdmin, commentController.deleteComment)
 
 router.get('/restaurants', authenticated, restController.getRestaurants)
 router.get('/restaurants/feeds', authenticated, restController.getFeeds)

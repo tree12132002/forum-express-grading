@@ -1,14 +1,8 @@
 const bcrypt = require('bcryptjs')
 const db = require('../models')
-const userService = require('../services/userService')
 const User = db.User
-const Comment = db.Comment
-const Restaurant = db.Restaurant
-const Favorite = db.Favorite
-const Like = db.Like
-const Followship = db.Followship
 
-const helpers = require('../_helpers')
+const userService = require('../services/userService')
 
 const userController = {
   signUpPage: (req, res) => {

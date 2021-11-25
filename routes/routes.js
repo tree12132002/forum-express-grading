@@ -78,7 +78,7 @@ router.get('/admin/users', authenticatedAdmin, adminController.getUsers)
 router.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.toggleAdmin)
 
 router.get('/signup', userController.signUpPage)
-router.post('/signup', userController.sugnUp)
+router.post('/signup', userController.signUp)
 
 router.get('/signin', userController.signInPage)
 router.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signIn)

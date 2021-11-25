@@ -73,37 +73,21 @@ const adminController = {
   },
 
   getUsers: (req, res) => {
-    return User.findAll({
-      raw: true,
-      nest: true
+    adminService.getUsers(req, res, (data) => {
+      return res.render('admin/users', data)
     })
-      .then(users => {
-        return res.render('admin/users', { users: users })
-      })
   },
 
   toggleAdmin: (req, res) => {
-    return User.findByPk(req.params.id)
-      .then(user => {
-        if (user.email === 'root@example.com') {
-          req.flash('error_messages', '禁止變更管理者權限')
-          return res.redirect('back')
-        }
-        if (user.isAdmin) {
-          user.update({
-            isAdmin: false
-          })
-          req.flash('success_messages', '使用者權限變更成功')
-          return res.redirect('/admin/users')
-        }
-        if (!user.isAdmin) {
-          user.update({
-            isAdmin: true
-          })
-          req.flash('success_messages', '使用者權限變更成功')
-          return res.redirect('/admin/users')
-        }
-      })
+    adminService.toggleAdmin(req, res, (data) => {
+      if (data['status'] === 'error') {
+        req.flash('error_messages', data['message'])
+        return res.redirect('back')
+      }
+      req.flash('success_messages', data['message'])
+      res.redirect('/admin/users')
+        
+    })
   }
 }
 

@@ -23,6 +23,7 @@ app.engine('hbs', exphbs({
 app.set('view engine', 'hbs')
 
 app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 app.use(session({
   secret: 'secret',
   resave: false,
